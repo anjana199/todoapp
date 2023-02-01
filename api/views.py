@@ -9,6 +9,7 @@ from rest_framework.decorators import action
 from django.contrib.auth.models import User
 from rest_framework import authentication,permissions
 
+
 class TodosView(ViewSet):
     def list(self,request,*args,**kw):
         qs=ToDosn.objects.all()
@@ -20,10 +21,12 @@ class TodosView(ViewSet):
         qs=ToDosn.objects.get(id=id)
         serializer=TodoSerializer(qs,many=False)
         return Response(data=serializer.data)
+
     def destroy(self,request,*args,**kw):
         id=kw.get("pk")
         ToDosn.objects.get(id=id).delete()
         return Response(data="deleted")
+        
     def update(self,request,*args,**kw):
         id=kw.get("pk")
         object=ToDosn.objects.get(id=id)
@@ -38,9 +41,10 @@ class TodosView(ViewSet):
 
 
 class TodosModelViews(ModelViewSet):
+
     authentication_classes=[authentication.BasicAuthentication]
     permission_classes=[permissions.IsAuthenticated]
-    
+
     serializer_class=TodoSerializer
     queryset=ToDosn.objects.all()
 
